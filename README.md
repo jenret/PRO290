@@ -119,17 +119,45 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 <!-- ROADMAP -->
-<!-- 
+
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
+- [ ] Add Changelog
+- [ ] Configure Project Infrastracture
+    - [ ] Initialize Node.JS Applications for Each Microservice
+    - [ ] Set up Docker for each Microservice
+- [ ] Implement User Service
+    - [ ] Design User Data Model
+    - [ ] Implement User CRUD Operations
+    - [ ] Implement User Service Unit Tests
+- [ ] Implement Product Service
+    - [ ] Design Product Data Model
+    - [ ] Implement Product CRUD Operations
+    - [ ] Implement Product Service Unit Tests
+    - [ ] Implement Order Service
+- [ ] Design Order Data Model
+    - [ ] Implement Order CRUD Operations
+    - [ ] Implement Order Service Unit Tests
+    - [ ] Implement Inventory Service
+    - [ ] Design Inventory Data Model
+    - [ ] Implement Inventory CRUD Operations
+    - [ ] Implement Inventory Service Unit Tests
+- [ ] Implement Customer Service
+    - [ ] Design Customer Data Model
+    - [ ] Implement Customer CRUD Operations
+    - [ ] Implement Customer Service Unit Tests
+- [ ] Implement API Gateway
+    - [ ] Design API Gateway Routes
+    - [ ] Implement Request Forwarding in API Gateway
+- [ ] Document Project
+- [ ] Write README.md
+- [ ] Document API Endpoints
+- [ ] Document Deployment Process
+- [ ] Refactoring and Code Review
 
 See the [open issues](https://github.com/ShadyAlexCodes/PRO290/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
@@ -174,7 +202,7 @@ Project Link: [https://github.com/ShadyAlexCodes/PRO290](https://github.com/Shad
 - []()
 - []() -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -190,7 +218,7 @@ Project Link: [https://github.com/ShadyAlexCodes/PRO290](https://github.com/Shad
 [license-shield]: https://img.shields.io/github/license/ShadyAlexCodes/PRO290.svg?style=for-the-badge
 [license-url]: https://github.com/ShadyAlexCodes/PRO290/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
+[linkedin-url]: https://linkedin.com/in/xander-endre
 [product-screenshot]: images/screenshot.png
 [Tailwindcss]: https://img.shields.io/badge/-000000?style=for-the-badge&logo=tailwindcss&logoColor=white
 [next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
