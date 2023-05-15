@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  DatabaseService:
+    container_name: DatabaseService
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - data:/var/lib/mysql
+      - ./database_service/script:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    networks:
+      - backend
+
+  OrderServiceAPI:
+   # container_name: OrderServiceAPI
+    build:
+      context: ./customer_service
+      dockerfile: Dockerfile
+    image: customer_service_api:1
+    environment:
+      DB_HOST: DatabaseService
+      DB_PASS: ${DB_ROOT_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+volumes:
+  data:
+
+networks:
+  backend:
+    name: backend
