@@ -1,5 +1,6 @@
 package io.github.xanderendre.CustomerService.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class AddressService {
 
         // Save the customer using the repository and return the saved object
         return addressRepository.save(address);
+    }
+
+    public List<Address> findAll() {
+        // Return all the customers from the repository
+        return (List<Address>) addressRepository.findAll();
     }
 
 }

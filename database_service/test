@@ -1,0 +1,4 @@
+docker run -d -p 3306:3306 --network backend -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=order_management_system -e MYSQL_USER=root -e MYSQL_PASSWORD=password --name MariaDB mariadb 
+
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=abc123!!@" -e "MSSQL_PID=Express" --name mssql --network backend -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest

@@ -3,6 +3,9 @@ package io.github.xanderendre.CustomerService.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.xanderendre.CustomerService.repositories.ContactInformationRepository;
+import io.github.xanderendre.CustomerService.repositories.CustomerParentRepository;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
@@ -28,18 +31,22 @@ public class Customer {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty("parent_id")
     @JoinColumn(name = "parent_id", nullable = false)
-    private CustomerParent customerParentId;
+    private ContactInformation customerParentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty("address_id")
     @JoinColumn(name = "address_id", nullable = false)
     private Address addressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty("shipping_address_id")
     @JoinColumn(name = "shipping_address_id", nullable = false)
     private Address shippingAddressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonProperty("primary_contact_id")
     @JoinColumn(name = "primary_contact_id", nullable = false)
     private ContactInformation primaryContactId;
 
@@ -73,12 +80,12 @@ public class Customer {
     public void setName(String name) {
         this.name = name;
     }
- 
-    public CustomerParent getCustomerParentId() {
+
+    public ContactInformation getCustomerParentId() {
         return customerParentId;
     }
 
-    public void setCustomerParentId(CustomerParent customerParentId) {
+    public void setCustomerParentId(ContactInformation customerParentId) {
         this.customerParentId = customerParentId;
     }
 
@@ -130,21 +137,18 @@ public class Customer {
         this.isActive = isActive;
     }
 
-    public LocalDateTime getdateCreated() {
-        return dateCreated;
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", customerParentId=" + customerParentId +
+                ", addressId=" + addressId +
+                ", shippingAddressId=" + shippingAddressId +
+                ", primaryContactId=" + primaryContactId +
+                ", isActive=" + isActive +
+                ", dateCreated=" + dateCreated +
+                ", dateModified=" + dateModified +
+                '}';
     }
-
-    public void setdateCreated(LocalDateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public LocalDateTime getdateModified() {
-        return dateModified;
-    }
-
-    public void setdateModified(LocalDateTime dateModified) {
-        this.dateModified = dateModified;
-    }
-
-    
 }

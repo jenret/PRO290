@@ -2,17 +2,15 @@ version: '3.7'
 services:
   DatabaseService:
     container_name: DatabaseService
-    image: mariadb:latest
+    image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SA_PASSWORD: ${DB_ROOT_PASSWORD}
+      ACCEPT_EULA: Y
     volumes:
-      - data:/var/lib/mysql
+      - mssqldata:/var/opt/mssql
       - ./database_service/script:/docker-entrypoint-initdb.d
     ports:
-      - "3306:3306"
+      - '1433:1433'
     restart: unless-stopped
     networks:
       - backend
@@ -28,8 +26,11 @@ services:
       DB_PASS: ${DB_ROOT_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
+      SPRING_PROFILES_ACTIVE: development
+    env_file:
+      - .env
     ports:
-      - "8080:80"
+      - "8080:8080"
     restart: always
     depends_on:
       - DatabaseService
@@ -37,7 +38,7 @@ services:
       - backend
 
 volumes:
-  data:
+  mssqldata:
 
 networks:
   backend:

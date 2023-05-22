@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,20 +20,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "contact_information")
+@Table(name = "addresses")
 public class Address {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    // @GeneratedValue(generator = "UUID")
+    // @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @JsonProperty("street_address")
     @Column(name = "street_address")
-    private String street_address;
+    private String streetAddress;
 
+    @JsonProperty("street_address_two")
     @Column(name = "street_address_two")
-    private String street_address_two;
+    private String streetAddressTwo;
 
     @Column(name = "city")
     private String city;
@@ -41,7 +45,7 @@ public class Address {
 
     @Column(name = "zipcode")
     private String zipcode;
-    
+
     @Column(name = "country")
     private String country;
 
@@ -66,19 +70,19 @@ public class Address {
     }
 
     public String getStreetAddress() {
-        return street_address;
+        return streetAddress;
     }
 
-    public void setStreetAddress(String street_address) {
-        this.street_address = street_address;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     public String getStreetAddressTwo() {
-        return street_address_two;
+        return streetAddressTwo;
     }
 
-    public void setStreetAddressTwo(String street_address_two) {
-        this.street_address_two = street_address_two;
+    public void setStreetAddressTwo(String streetAddressTwo) {
+        this.streetAddressTwo = streetAddressTwo;
     }
 
     public String getCity() {
@@ -127,6 +131,13 @@ public class Address {
 
     public void setDateModified(LocalDateTime dateModified) {
         this.dateModified = dateModified;
+    }
+
+    @Override
+    public String toString() {
+        return "Address [id=" + id + ", street_address=" + streetAddress + ", street_address_two=" + streetAddressTwo
+                + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode + ", country=" + country
+                + ", dateCreated=" + dateCreated + ", dateModified=" + dateModified + "]";
     }
 
 }

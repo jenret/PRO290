@@ -9,6 +9,7 @@ package io.github.xanderendre.CustomerService.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
@@ -27,17 +28,21 @@ public class ContactInformation {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @JsonProperty("first_name")
     @Column(name = "first_name")
-    private String first_name;
- 
+    private String FirstName;
+
+    @JsonProperty("last_name")
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
+    @JsonProperty("phone_number")
     @Column(name = "phone_number")
-    private String phone_number;
+    private String phoneNumber;
 
+    @JsonProperty("email_address")
     @Column(name = "email_address")
-    private String email_address;
+    private String emailAddress;
 
     @Column(name = "is_active")
     private boolean isActive;
@@ -54,6 +59,18 @@ public class ContactInformation {
         this.dateModified = LocalDateTime.now();
     }
 
+    public ContactInformation(UUID id, String firstName, String lastName, String phoneNumber, String emailAddress, boolean isActive, LocalDateTime dateCreated, LocalDateTime dateModified) {
+        this.id = id;
+        FirstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.isActive = isActive;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
+    }
+
+
     public UUID getId() {
         return id;
     }
@@ -63,43 +80,43 @@ public class ContactInformation {
     }
 
     public String getFirstName() {
-        return first_name;
+        return FirstName;
     }
 
-    public void setFirstName(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
-    public void SetLastName(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {
-        return phone_number;
+        return phoneNumber;
     }
 
-    public void setPhoneNumber(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmailAddress() {
-        return email_address;
+        return emailAddress;
     }
 
-    public void setEmailAddress(String email_address) {
-        this.email_address = email_address;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public LocalDateTime getDateCreated() {
@@ -117,6 +134,4 @@ public class ContactInformation {
     public void setDateModified(LocalDateTime dateModified) {
         this.dateModified = dateModified;
     }
-
-    
 }
