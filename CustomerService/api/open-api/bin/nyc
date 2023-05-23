@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+nyc="$(dirname $(dirname $0))/node_modules/.bin/nyc"
+mocha="$(dirname $0)/mocha"
+
+$nyc \
+  --extension=.ts \
+  -r lcov \
+  -r text-summary \
+  -r json \
+  -r html \
+  --instrument \
+  $mocha

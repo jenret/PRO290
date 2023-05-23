@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "module": "CommonJS",
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "files": [
+    "index.ts"
+  ]
+}
