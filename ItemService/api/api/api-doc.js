@@ -1,7 +1,7 @@
 const apiDoc = {
     openapi: "3.0.2",
     info: {
-        title: "Address Service API",
+        title: "Item Service API",
         version: "1.0.0"
     },
     paths: {},
@@ -18,41 +18,21 @@ const apiDoc = {
                     }
                 }
             },
-            Address: {
+            Item: {
                 type: "object",
                 properties: {
                     id: {
                         type: 'string',
                         format: 'uuid',
                     },
-                    street_address: {
+                    name: {
                         type: 'string',
                     },
-                    street_address_two: {
+                    description: {
                         type: 'string',
-                    },
-                    city: {
-                        type: 'string',
-                    },
-                    state: {
-                        type: 'string',
-                    },
-                    zipcode: {
-                        type: 'string',
-                    },
-                    country: {
-                        type: 'string',
-                    },
-                    date_created: {
-                        type: 'string',
-                        format: 'date-time',
-                    },
-                    date_modified: {
-                        type: 'string',
-                        format: 'date-time',
                     }
                 },
-                //required: ['name', 'parent_id', 'address_id', 'shipping_address_id', 'primary_contact_id', 'is_active']
+                //required: ['name', 'parent_id', 'item_id', 'shipping_item_id', 'primary_contact_id', 'is_active']
             }
         }
     }

@@ -33,12 +33,8 @@ class OrderRepository {
             // Construct and return a Order object
             return new Order(
                 orderData.id,
-                orderData.street_order,
-                orderData.street_order_two,
-                orderData.city,
-                orderData.state,
-                orderData.zipcode,
-                orderData.country
+                orderData.customer_id,
+                orderData.notes
             );
         } catch (error) {
             throw new Error(`Failed to fetch order: ${error.message}`);
@@ -60,12 +56,8 @@ class OrderRepository {
             // Construct and return a list of Order objects
             return ordersData.map(orderData => new Order(
                 orderData.id,
-                orderData.street_order,
-                orderData.street_order_two,
-                orderData.city,
-                orderData.state,
-                orderData.zipcode,
-                orderData.country
+                orderData.customer_id,
+                orderData.notes
             ));
         } catch (error) {
             throw new Error(`Failed to fetch all orders: ${error.message}`);
@@ -77,14 +69,8 @@ class OrderRepository {
     async createOrder(order) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`INSERT INTO orders(street_order, street_order_two, city, state, zipcode, country) VALUES (@street_order, @street_order_two, @city, @state, @zipcode, @country)`, {
-                street_order: order.street_order,
-                street_order_two: order.street_order_two,
-                city: order.city,
-                state: order.state,
-                zipcode: order.zipcode,
-                country: order.country
-            });
+            const result = await sql.query(`INSERT INTO orders(customer_id, notes) VALUES ('${order.customer_id}', '${order.notes}')`);
+
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to create order: ${error.message}`);
@@ -96,7 +82,7 @@ class OrderRepository {
     async updateOrder(id, order) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`UPDATE orders SET street_order='${order.street_order}', street_order_two='${order.street_order_two}', city='${order.city}', state='${order.state}', zipcode='${order.zipcode}', country='${order.country}' WHERE id='${id}'`, );
+            const result = await sql.query(`UPDATE orders SET customer_id='${order.customer_id}', notes='${order.notes}'`, );
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to update order: ${error.message}`);
@@ -125,14 +111,13 @@ class OrderRepository {
 
             for (let i = 0; i < 15; i++) {
                 const fakeOrder = {
-                    street_order: faker.location.street(),
-                    street_order_two: faker.location.secondaryOrder(),
-                    city: faker.location.city(),
-                    state: faker.location.state(),
-                    zipcode: faker.location.zipCode(),
-                    country: faker.location.country()
+                    order_id: faker.location.order_id(),
+                    item_id: faker.location.item_id(),
+                    quantity: faker.location.quantity(),
+                    price: faker.location.price(),
+                    notes: faker.location.notes()
                 }
-                 await sql.query `INSERT INTO orders(street_order, street_order_two, city, state, zipcode, country)  VALUES (${fakeOrder.street_order}, ${fakeOrder.street_order_two}, ${fakeOrder.city}, ${fakeOrder.state}, ${fakeOrder.zipcode}, ${fakeOrder.country})`;
+                await sql.query `INSERT INTO orders(order_id, item_id, quantity, price, notes)  VALUES (${fakeOrder.order_id}, ${fakeOrder.item_id}, ${fakeOrder.quantity}, ${fakeOrder.price}, ${fakeOrder.notes})`;
             }
         } catch (error) {
             throw new Error(`Failed to create order: ${error.message}`);

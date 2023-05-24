@@ -1,5 +1,5 @@
-const AddressService = require("../../dal/services/AddressService");
-const addressService = new AddressService();
+const UserService = require("../../dal/services/UserService");
+const userService = new UserService();
 
 module.exports = function () {
     let operations = {
@@ -10,9 +10,9 @@ module.exports = function () {
 
     async function GET(req, res, next) {
         try {
-            const addresss = await addressService.getAddressById(req.params.id);
+            const users = await userService.getUserById(req.params.id);
             res.status(200).json({
-                addresss: addresss
+                users: users
             });
         } catch (err) {
             console.error(err);
@@ -24,9 +24,9 @@ module.exports = function () {
 
     async function PATCH(req, res, next) {
         try {
-            const newAddress = await addressService.updateAddress(req.params.id, req.body);
+            const newUser = await userService.updateUser(req.params.id, req.body);
             res.status(201).json({
-                address: newAddress
+                user: newUser
             });
         } catch (err) {
             console.error(err);
@@ -38,9 +38,9 @@ module.exports = function () {
 
     async function DELETE(req, res, next) {
         try {
-            await addressService.deleteAddress(req.params.id); // Assuming 'id' is the URL parameter
+            await userService.deleteUser(req.params.id); // Assuming 'id' is the URL parameter
             res.status(200).json({
-                message: "Address successfully deleted"
+                message: "User successfully deleted"
             });
         } catch (err) {
             console.error(err.message); // Log the error message directly
@@ -54,15 +54,15 @@ module.exports = function () {
 
 
     GET.apiDoc = {
-        summary: "Retrieve all addresses from the database",
-        operationId: "get-addresss",
+        summary: "Retrieve all users from the database",
+        operationId: "get-users",
         responses: {
             200: {
-                description: "Returns a list of all addresss",
+                description: "Returns a list of all users",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address",
+                            $ref: "#/components/schemas/User",
                         },
                     },
                 },
@@ -81,26 +81,26 @@ module.exports = function () {
     };
 
     PATCH.apiDoc = {
-        summary: "Updates an existing address in the database",
-        operationId: "update-address",
+        summary: "Updates an existing user in the database",
+        operationId: "update-user",
         requestBody: {
-            description: "The address to update",
+            description: "The user to update",
             required: true,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/User"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added user",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/User"
                         }
                     }
                 }
@@ -119,26 +119,26 @@ module.exports = function () {
     };
 
     DELETE.apiDoc = {
-        summary: "Removes an existing address in the database",
-        operationId: "delete-address",
+        summary: "Removes an existing user in the database",
+        operationId: "delete-user",
         requestBody: {
-            description: "The address to delete",
+            description: "The user to delete",
             required: false,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/User"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added user",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/User"
                         }
                     }
                 }

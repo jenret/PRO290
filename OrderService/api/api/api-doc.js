@@ -29,19 +29,7 @@ const apiDoc = {
                         type: 'string',
                         format: 'uuid',
                     },
-                    order_date: {
-                        type: 'string',
-                    },
-                    city: {
-                        type: 'string',
-                    },
-                    state: {
-                        type: 'string',
-                    },
-                    zipcode: {
-                        type: 'string',
-                    },
-                    country: {
+                    notes: {
                         type: 'string',
                     },
                     date_created: {

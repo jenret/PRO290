@@ -3,9 +3,9 @@ const sql = require('mssql');
 const {
     faker
 } = require('@faker-js/faker');
-const Order = require("../models/Order");
+const OrderItems = require("../models/OrderItems");
 
-class OrderRepository {
+class OrderItemsRepository {
     constructor() {
         this.config = {
             user: 'sa',
@@ -23,7 +23,7 @@ class OrderRepository {
     async getOrderById(orderId) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`SELECT * FROM orders WHERE id = '${orderId}'`);
+            const result = await sql.query(`SELECT * FROM order_items WHERE id = '${orderId}'`);
             const orderData = result.recordset[0];
 
             if (!orderData) {
@@ -31,14 +31,13 @@ class OrderRepository {
             }
 
             // Construct and return a Order object
-            return new Order(
+            return new OrderItems(
                 orderData.id,
-                orderData.street_order,
-                orderData.street_order_two,
-                orderData.city,
-                orderData.state,
-                orderData.zipcode,
-                orderData.country
+                orderData.order_id,
+                orderData.item_id,
+                orderData.quantity,
+                orderData.price,
+                orderData.notes
             );
         } catch (error) {
             throw new Error(`Failed to fetch order: ${error.message}`);
@@ -50,7 +49,7 @@ class OrderRepository {
     async getAllOrders() {
         try {
             await sql.connect(this.config);
-            const result = await sql.query `SELECT * FROM orders`;
+            const result = await sql.query `SELECT * FROM order_items`;
             const ordersData = result.recordset;
 
             if (!ordersData) {
@@ -58,14 +57,13 @@ class OrderRepository {
             }
 
             // Construct and return a list of Order objects
-            return ordersData.map(orderData => new Order(
+            return ordersData.map(orderData => new OrderItems(
                 orderData.id,
-                orderData.street_order,
-                orderData.street_order_two,
-                orderData.city,
-                orderData.state,
-                orderData.zipcode,
-                orderData.country
+                orderData.order_id,
+                orderData.item_id,
+                orderData.quantity,
+                orderData.price,
+                orderData.notes
             ));
         } catch (error) {
             throw new Error(`Failed to fetch all orders: ${error.message}`);
@@ -77,13 +75,12 @@ class OrderRepository {
     async createOrder(order) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`INSERT INTO orders(street_order, street_order_two, city, state, zipcode, country) VALUES (@street_order, @street_order_two, @city, @state, @zipcode, @country)`, {
-                street_order: order.street_order,
-                street_order_two: order.street_order_two,
-                city: order.city,
-                state: order.state,
-                zipcode: order.zipcode,
-                country: order.country
+            const result = await sql.query(`INSERT INTO orders_items(order_id, item_id, quantity, price, notes) VALUES (@order_id, @item_id, @quantity, @price, @notes)`, {
+                order_id: order.order_id,
+                item_id: order.item_id,
+                quantity: order.quantity,
+                price: order.price,
+                notes: order.notes
             });
             return result.rowsAffected[0] > 0;
         } catch (error) {
@@ -96,7 +93,7 @@ class OrderRepository {
     async updateOrder(id, order) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`UPDATE orders SET street_order='${order.street_order}', street_order_two='${order.street_order_two}', city='${order.city}', state='${order.state}', zipcode='${order.zipcode}', country='${order.country}' WHERE id='${id}'`, );
+            const result = await sql.query(`UPDATE order_items SET order_id='${order.order_id}', item_id='${order.item_id}', quantity='${order.quantity}', price='${order.price}', notes='${order.notes}' WHERE id='${id}'`, );
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to update order: ${error.message}`);
@@ -108,7 +105,7 @@ class OrderRepository {
     async deleteOrder(orderId) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`DELETE FROM orders WHERE id='${orderId}'`);
+            const result = await sql.query(`DELETE FROM order_items WHERE id='${orderId}'`);
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to delete order: ${error.message}`);
@@ -125,14 +122,13 @@ class OrderRepository {
 
             for (let i = 0; i < 15; i++) {
                 const fakeOrder = {
-                    street_order: faker.location.street(),
-                    street_order_two: faker.location.secondaryOrder(),
-                    city: faker.location.city(),
-                    state: faker.location.state(),
-                    zipcode: faker.location.zipCode(),
-                    country: faker.location.country()
+                    order_id: faker.location.order_id(),
+                    item_id: faker.location.item_id(),
+                    quantity: faker.location.quantity(),
+                    price: faker.location.price(),
+                    notes: faker.location.notes()
                 }
-                 await sql.query `INSERT INTO orders(street_order, street_order_two, city, state, zipcode, country)  VALUES (${fakeOrder.street_order}, ${fakeOrder.street_order_two}, ${fakeOrder.city}, ${fakeOrder.state}, ${fakeOrder.zipcode}, ${fakeOrder.country})`;
+                 await sql.query `INSERT INTO orders_items(order_id, item_id, quantity, price, notes)  VALUES (${fakeOrder.order_id}, ${fakeOrder.item_id}, ${fakeOrder.quantity}, ${fakeOrder.price}, ${fakeOrder.notes})`;
             }
         } catch (error) {
             throw new Error(`Failed to create order: ${error.message}`);
@@ -142,4 +138,4 @@ class OrderRepository {
     }
 }
 
-module.exports = OrderRepository;
+module.exports = OrderItemsRepository;

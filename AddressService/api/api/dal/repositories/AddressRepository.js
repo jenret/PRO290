@@ -77,14 +77,7 @@ class AddressRepository {
     async createAddress(address) {
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`INSERT INTO addresses(street_address, street_address_two, city, state, zipcode, country) VALUES (@street_address, @street_address_two, @city, @state, @zipcode, @country)`, {
-                street_address: address.street_address,
-                street_address_two: address.street_address_two,
-                city: address.city,
-                state: address.state,
-                zipcode: address.zipcode,
-                country: address.country
-            });
+            const result = await sql.query(`INSERT INTO addresses(street_address, street_address_two, city, state, zipcode, country) VALUES ('${address.street_address}', '${address.street_address_two}', '${address.city}', '${address.state}', '${address.zipcode}', '${address.country}')`);
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to create address: ${error.message}`);

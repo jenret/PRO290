@@ -1,5 +1,5 @@
-const AddressService = require("../../dal/services/AddressService");
-const addressService = new AddressService();
+const ItemService = require("../../dal/services/ItemService");
+const itemService = new ItemService();
 
 module.exports = function () {
     let operations = {
@@ -9,9 +9,9 @@ module.exports = function () {
 
     async function GET(req, res, next) {
         try {
-            const addresss = await addressService.getAllAddresss();
+            const items = await itemService.getAllItems();
             res.status(200).json({
-                addresss: addresss
+                items: items
             });
         } catch (err) {
             console.error(err);
@@ -23,9 +23,9 @@ module.exports = function () {
 
     async function POST(req, res, next) {
         try {
-            const newAddress = await addressService.createAddress(req.body);
+            const newItem = await itemService.createItem(req.body);
             res.status(201).json({
-                address: newAddress
+                item: newItem
             });
         } catch (err) {
             console.error(err);
@@ -37,15 +37,15 @@ module.exports = function () {
 
 
     GET.apiDoc = {
-        summary: "Retrieve all addresses from the database",
-        operationId: "get-addresss",
+        summary: "Retrieve all items from the database",
+        operationId: "get-items",
         responses: {
             200: {
-                description: "Returns a list of all addresss",
+                description: "Returns a list of all items",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address",
+                            $ref: "#/components/schemas/Item",
                         },
                     },
                 },
@@ -64,26 +64,26 @@ module.exports = function () {
     };
 
     POST.apiDoc = {
-        summary: "Add a new address to the database",
-        operationId: "add-address",
+        summary: "Add a new item to the database",
+        operationId: "add-item",
         requestBody: {
-            description: "The address to add",
+            description: "The item to add",
             required: true,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/Item"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added item",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/Item"
                         }
                     }
                 }

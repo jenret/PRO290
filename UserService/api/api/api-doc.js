@@ -1,7 +1,7 @@
 const apiDoc = {
     openapi: "3.0.2",
     info: {
-        title: "Address Service API",
+        title: "User Service API",
         version: "1.0.0"
     },
     paths: {},
@@ -18,30 +18,26 @@ const apiDoc = {
                     }
                 }
             },
-            Order: {
+            User: {
                 type: "object",
                 properties: {
                     id: {
                         type: 'string',
                         format: 'uuid',
                     },
-                    customer_id: {
-                        type: 'string',
-                        format: 'uuid',
+                    first_name: {
+                        type: 'string'
                     },
-                    order_date: {
-                        type: 'string',
-                    },
-                    city: {
+                    last_name: {
                         type: 'string',
                     },
-                    state: {
+                    email_address: {
                         type: 'string',
                     },
-                    zipcode: {
+                    phone_number: {
                         type: 'string',
                     },
-                    country: {
+                    password: {
                         type: 'string',
                     },
                     date_created: {
@@ -52,8 +48,7 @@ const apiDoc = {
                         type: 'string',
                         format: 'date-time',
                     }
-                },
-                //required: ['name', 'parent_id', 'address_id', 'shipping_address_id', 'primary_contact_id', 'is_active']
+                }
             }
         }
     }

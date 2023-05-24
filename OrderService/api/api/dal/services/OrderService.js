@@ -18,11 +18,8 @@ class OrderService {
         // Define a schema for order data
         const schema = Joi.object({
             customer_id: Joi.string().required(),
-            order_date: Joi.string().allow(''), // Optional field
-            city: Joi.string().required(),
-            state: Joi.string().required(),
-            zipcode: Joi.string().required(),
-            country: Joi.string().required()
+            order_date: Joi.string().allow(''), // Make it an Optional field -> item_id: Joi.string().allow(''), 
+            notes: Joi.string().required()
         });
 
         // Validate the orderData against the schema
@@ -39,17 +36,14 @@ class OrderService {
     }
 
     async populateDatabase() {
-         return this.orderRepository.populateDatabase();
+        return this.orderRepository.populateDatabase();
     }
 
     async updateOrder(id, orderData) {
         const schema = Joi.object({
-            street_order: Joi.string().required(),
-            street_order_two: Joi.string().allow(''), // Optional field
-            city: Joi.string().required(),
-            state: Joi.string().required(),
-            zipcode: Joi.string().required(),
-            country: Joi.string().required()
+            customer_id: Joi.string().required(),
+            order_date: Joi.string().required(), // Make it an Optional field -> item_id: Joi.string().allow(''), 
+            notes: Joi.int().required()
         });
 
         // Validate the orderData against the schema

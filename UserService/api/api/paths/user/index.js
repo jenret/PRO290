@@ -1,5 +1,5 @@
-const OrderService = require("../../dal/services/OrderService");
-const orderService = new OrderService();
+const UserService = require("../../dal/services/UserService");
+const userService = new UserService();
 
 module.exports = function () {
     let operations = {
@@ -9,9 +9,9 @@ module.exports = function () {
 
     async function GET(req, res, next) {
         try {
-            const orders = await orderService.getAllOrders();
+            const users = await userService.getAllUsers();
             res.status(200).json({
-                orders: orders
+                users: users
             });
         } catch (err) {
             console.error(err);
@@ -22,10 +22,11 @@ module.exports = function () {
     }
 
     async function POST(req, res, next) {
+        console.log("I WAS HIT")
         try {
-            const newOrder = await orderService.createOrder(req.body);
+            const newUser = await userService.createUser(req.body);
             res.status(201).json({
-                order: newOrder
+                user: newUser
             });
         } catch (err) {
             console.error(err);
@@ -37,15 +38,15 @@ module.exports = function () {
 
 
     GET.apiDoc = {
-        summary: "Retrieve all orders from the database",
-        operationId: "get-orders",
+        summary: "Retrieve all users from the database",
+        operationId: "get-users",
         responses: {
             200: {
-                description: "Returns a list of all orders",
+                description: "Returns a list of all users",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Order",
+                            $ref: "#/components/schemas/User",
                         },
                     },
                 },
@@ -64,26 +65,26 @@ module.exports = function () {
     };
 
     POST.apiDoc = {
-        summary: "Add a new order to the database",
-        operationId: "add-order",
+        summary: "Add a new user to the database",
+        operationId: "add-user",
         requestBody: {
-            description: "The order to add",
+            description: "The user to add",
             required: true,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Order"
+                        $ref: "#/components/schemas/User"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added order",
+                description: "Successfully added user",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Order"
+                            $ref: "#/components/schemas/User"
                         }
                     }
                 }

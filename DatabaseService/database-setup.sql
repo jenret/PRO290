@@ -80,10 +80,8 @@ create index child_bill_of_materials_index on bill_of_materials(child_item_id);
 create table orders (
     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
     customer_id uniqueidentifier not null,
-    order_date datetime not null,
-    shipping_date datetime not null,
+    order_date datetime default current_timestamp,
     notes nvarchar(256) null,
-    order_status_id bit not null,
     date_created datetime default current_timestamp,
     date_modified datetime default current_timestamp,
     foreign key (customer_id) references customer (id) on delete cascade
@@ -100,6 +98,8 @@ create table order_items (
     foreign key (order_id) references orders (id) on delete cascade,
     foreign key (item_id) references items (id)
 );
+
+--LOOK @ DISCORD
 -- create table inventory (
 --     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
 --     item_id uniqueidentifier not null,

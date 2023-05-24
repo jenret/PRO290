@@ -18,17 +18,18 @@ const apiDoc = {
                     }
                 }
             },
-            Address: {
+            Order: {
                 type: "object",
                 properties: {
                     id: {
                         type: 'string',
                         format: 'uuid',
                     },
-                    street_address: {
+                    customer_id: {
                         type: 'string',
+                        format: 'uuid',
                     },
-                    street_address_two: {
+                    order_date: {
                         type: 'string',
                     },
                     city: {

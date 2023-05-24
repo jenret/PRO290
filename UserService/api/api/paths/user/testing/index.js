@@ -1,5 +1,5 @@
-const AddressService = require("../../../dal/services/AddressService");
-const addressService = new AddressService();
+const UserService = require("../../../dal/services/UserService");
+const userService = new UserService();
 
 module.exports = function () {
     let operations = {
@@ -8,7 +8,7 @@ module.exports = function () {
 
     async function POST(req, res, next) {
         try {
-            await addressService.populateDatabase();
+            await userService.populateDatabase();
             res.status(201).send();
         } catch (err) {
             console.error(err.message);
@@ -19,26 +19,26 @@ module.exports = function () {
     }
 
     POST.apiDoc = {
-        summary: "Adds several new address to the database",
-        operationId: "add-addresses",
+        summary: "Adds several new user to the database",
+        operationId: "add-useres",
         requestBody: {
-            description: "The addresses to add",
+            description: "The useres to add",
             required: false,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/User"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added user",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/User"
                         }
                     }
                 }

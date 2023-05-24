@@ -1,5 +1,5 @@
-const AddressService = require("../../../dal/services/AddressService");
-const addressService = new AddressService();
+const ItemService = require("../../../dal/services/ItemService");
+const itemService = new ItemService();
 
 module.exports = function () {
     let operations = {
@@ -8,7 +8,7 @@ module.exports = function () {
 
     async function POST(req, res, next) {
         try {
-            await addressService.populateDatabase();
+            await itemService.populateDatabase();
             res.status(201).send();
         } catch (err) {
             console.error(err.message);
@@ -19,26 +19,26 @@ module.exports = function () {
     }
 
     POST.apiDoc = {
-        summary: "Adds several new address to the database",
-        operationId: "add-addresses",
+        summary: "Adds several new item to the database",
+        operationId: "add-items",
         requestBody: {
-            description: "The addresses to add",
+            description: "The items to add",
             required: false,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/Item"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added item",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/Item"
                         }
                     }
                 }
