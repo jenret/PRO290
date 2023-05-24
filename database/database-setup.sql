@@ -49,20 +49,20 @@ create table customer (
 );
 create index customer_id_index on customer(id);
 --  order management system
-create table vendor (
-    id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
-    name nvarchar(64) not null,
-    contact_id uniqueidentifier not null,
-    address_id uniqueidentifier not null,
-    date_created datetime default current_timestamp,
-    date_modified datetime default current_timestamp,
-);
+-- create table vendor (
+--     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
+--     name nvarchar(64) not null,
+--     contact_id uniqueidentifier not null,
+--     address_id uniqueidentifier not null,
+--     date_created datetime default current_timestamp,
+--     date_modified datetime default current_timestamp,
+-- );
 create table items (
     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
     name nvarchar(64) not null,
     description nvarchar(128) not null,
-    vendor_id uniqueidentifier not null,
-    foreign key (vendor_id) references vendor (id) on delete cascade,
+    -- vendor_id uniqueidentifier not null,
+    -- foreign key (vendor_id) references vendor (id) on delete cascade,
 );
 create index items_id_index on items(id);
 create table bill_of_materials (
