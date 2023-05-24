@@ -20,7 +20,7 @@ class AddressRepository {
     }
 
     // Methods that interact with the address table
-    async findById(addressId) {
+    async getAddressById(addressId) {
         try {
             await sql.connect(this.config);
             const result = await sql.query(`SELECT * FROM addresses WHERE id = '${addressId}'`);

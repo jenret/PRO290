@@ -1,5 +1,5 @@
-const CustomerService = require("../../dal/services/CustomerService");
-const customerService = new CustomerService();
+const ContactInformationService = require("../../dal/services/ContactInformationService");
+const contact = new  ContactInformationService();
 
 module.exports = function () {
     let operations = {
@@ -8,11 +8,10 @@ module.exports = function () {
     };
 
     async function GET(req, res, next) {
-
         try {
-            const customers = await customerService.getAllCustomers();
+            const ContactInformation = await contact.getAllContactInformation();
             res.status(200).json({
-                customers: customers
+                contacts: ContactInformation
             });
         } catch (err) {
             console.error(err);
@@ -23,11 +22,10 @@ module.exports = function () {
     }
 
     async function POST(req, res, next) {
-
         try {
-            const customers = await customerService.createCustomer(req.body);
-            res.status(200).json({
-                customers: customers
+            const newContactInformation = await contact.createContactInformation(req.body);
+            res.status(201).json({
+                contacts: newContactInformation
             });
         } catch (err) {
             console.error(err);
@@ -37,17 +35,17 @@ module.exports = function () {
         }
     }
 
+
     GET.apiDoc = {
-        summary: "Retrieve no customers from the database because broken",
-        description: "Lorem ipsum",
-        operationId: "get-customers",
+        summary: "Retrieve all contactinformation from the database",
+        operationId: "get-contact-informations",
         responses: {
             200: {
-                description: "Returns a list of all customers",
+                description: "Returns a list of all ContactInformation",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Customer",
+                            $ref: "#/components/schemas/ContactInformation",
                         },
                     },
                 },
@@ -66,31 +64,43 @@ module.exports = function () {
     };
 
     POST.apiDoc = {
-        summary: "Adds a new customer to the database",
-        description: "Lorem ipsum",
-        operationId: "add-customers",
+        summary: "Add a new contactinformation to the database",
+        operationId: "add-contact-information",
+        requestBody: {
+            description: "The contactinformation to add",
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/ContactInformation"
+                    }
+                }
+            }
+        },
         responses: {
             201: {
-                description: "Successfully added customers",
+                description: "Successfully added contactinformation",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Customer",
-                        },
-                    },
-                },
+                            $ref: "#/components/schemas/ContactInformation"
+                        }
+                    }
+                }
             },
             500: {
                 description: "Internal Server Error",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Error",
-                        },
-                    },
-                },
-            },
-        },
+                            $ref: "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        }
     };
+
+
     return operations;
 };

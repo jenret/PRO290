@@ -1,5 +1,8 @@
 // CustomerRepository.js
 const sql = require('mssql');
+const {
+    faker
+} = require('@faker-js/faker');
 const Customer = require("../models/Customer");
 
 class CustomerRepository {
@@ -17,7 +20,7 @@ class CustomerRepository {
     }
 
     // Methods that interact with the customer table
-    async findById(customerId) {
+    async getCustomerById(customerId) {
         try {
             await sql.connect(this.config);
             const result = await sql.query(`SELECT * FROM customer WHERE id = '${customerId}'`);
@@ -32,10 +35,7 @@ class CustomerRepository {
                 customerData.id,
                 customerData.name,
                 customerData.address_id,
-                customerData.contact_id,
-                customerData.shipping_address_id,
-                customerData.primary_contact_id,
-                customerData.is_active
+                customerData.contact_id
             );
         } catch (error) {
             throw new Error(`Failed to fetch customer: ${error.message}`);
@@ -59,10 +59,7 @@ class CustomerRepository {
                 customerData.id,
                 customerData.name,
                 customerData.address_id,
-                customerData.contact_id,
-                customerData.shipping_address_id,
-                customerData.primary_contact_id,
-                customerData.is_active
+                customerData.contact_id
             ));
         } catch (error) {
             throw new Error(`Failed to fetch all customers: ${error.message}`);
@@ -71,20 +68,55 @@ class CustomerRepository {
         }
     }
 
-    async create(customer) {
+    async createCustomer(customer) {
+        try {
+            await sql.connect(this.config);
+            const contactResult = await sql.query(`SELECT * FROM contact_information WHERE id = '${customer.contact_id}'`);
+            if (contactResult.recordset.length === 0) {
+                throw new Error(`Contact ID ${customer.contact_id} does not exist`);
+            }
 
+            const addressResult = await sql.query(`SELECT * FROM addresses WHERE id = '${customer.address_id}'`);
+            if (addressResult.recordset.length === 0) {
+                throw new Error(`Address ID ${customer.address_id} does not exist`);
+            }
+
+            const result = await sql.query(`INSERT INTO customer(name, contact_id, address_id) VALUES ('${customer.name}','${customer.contact_id}', '${customer.address_id}')`);
+            return result.rowsAffected[0] > 0;
+        } catch (error) {
+            throw new Error(`Failed to create customer: ${error.message}`);
+        } finally {
+            await sql.close();
+        }
     }
 
-    async update(customer) {
-
+    async updateCustomer(customer) {
+        try {
+            await sql.connect(this.config);
+            const result = await sql.query(`UPDATE customer SET name='${customer.name}', address_id='${customer.address_id}', contact_id='${customer.contact_id}' WHERE id='${customer.id}'`);
+            return result.rowsAffected[0] > 0;
+        } catch (error) {
+            throw new Error(`Failed to update customer: ${error.message}`);
+        } finally {
+            await sql.close();
+        }
     }
 
-    async delete(customerId) {
-
+    async deleteCustomer(customerId) {
+        try {
+            await sql.connect(this.config);
+            const result = await sql.query(`DELETE FROM customer WHERE id='${customerId}'`);
+            return result.rowsAffected[0] > 0;
+        } catch (error) {
+            throw new Error(`Failed to delete customer: ${error.message}`);
+        } finally {
+            await sql.close();
+        }
     }
 }
 
 module.exports = CustomerRepository;
+
 
 // const grpc = require("@grpc/grpc-js");
 // const protoLoader = require("@grpc/proto-loader");
@@ -154,4 +186,3 @@ module.exports = CustomerRepository;
 // }
 
 // module.exports = CustomerRepository;
-

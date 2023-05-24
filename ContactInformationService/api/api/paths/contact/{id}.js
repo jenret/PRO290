@@ -1,5 +1,5 @@
-const AddressService = require("../../dal/services/AddressService");
-const addressService = new AddressService();
+const ContactInformationService = require("../../dal/services/ContactInformationService");
+const contact = new  ContactInformationService();
 
 module.exports = function () {
     let operations = {
@@ -10,9 +10,9 @@ module.exports = function () {
 
     async function GET(req, res, next) {
         try {
-            const addresss = await addressService.getAddressById(req.params.id);
+            const ContactInformation = await contact.getContactInformationById(req.params.id);
             res.status(200).json({
-                addresss: addresss
+                contact: ContactInformation
             });
         } catch (err) {
             console.error(err);
@@ -24,9 +24,9 @@ module.exports = function () {
 
     async function PATCH(req, res, next) {
         try {
-            const newAddress = await addressService.updateAddress(req.params.id, req.body);
+            const newContactInformation = await contact.updateContactInformation(req.params.id, req.body);
             res.status(201).json({
-                address: newAddress
+                contact: newContactInformation
             });
         } catch (err) {
             console.error(err);
@@ -38,9 +38,9 @@ module.exports = function () {
 
     async function DELETE(req, res, next) {
         try {
-            await addressService.deleteAddress(req.params.id); // Assuming 'id' is the URL parameter
+            await contact.deleteContactInformation(req.params.id); // Assuming 'id' is the URL parameter
             res.status(200).json({
-                message: "Address successfully deleted"
+                message: "ContactInformation successfully deleted"
             });
         } catch (err) {
             console.error(err.message); // Log the error message directly
@@ -54,15 +54,15 @@ module.exports = function () {
 
 
     GET.apiDoc = {
-        summary: "Retrieve all addresses from the database",
-        operationId: "get-addresss",
+        summary: "Retrieve all contactinformation from the database",
+        operationId: "get-contact-informations",
         responses: {
             200: {
-                description: "Returns a list of all addresss",
+                description: "Returns a list of all ContactInformation",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address",
+                            $ref: "#/components/schemas/ContactInformation",
                         },
                     },
                 },
@@ -81,26 +81,26 @@ module.exports = function () {
     };
 
     PATCH.apiDoc = {
-        summary: "Updates an existing address in the database",
-        operationId: "update-address",
+        summary: "Updates an existing contactinformation in the database",
+        operationId: "update-contact-information",
         requestBody: {
-            description: "The address to update",
+            description: "The contactinformation to update",
             required: true,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/ContactInformation"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added contactinformation",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/ContactInformation"
                         }
                     }
                 }
@@ -119,26 +119,26 @@ module.exports = function () {
     };
 
     DELETE.apiDoc = {
-        summary: "Removes an existing address in the database",
-        operationId: "delete-address",
+        summary: "Removes an existing contactinformation in the database",
+        operationId: "delete-contact-information",
         requestBody: {
-            description: "The address to delete",
+            description: "The contactinformation to delete",
             required: false,
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/Address"
+                        $ref: "#/components/schemas/ContactInformation"
                     }
                 }
             }
         },
         responses: {
             201: {
-                description: "Successfully added address",
+                description: "Successfully added contactinformation",
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/Address"
+                            $ref: "#/components/schemas/ContactInformation"
                         }
                     }
                 }

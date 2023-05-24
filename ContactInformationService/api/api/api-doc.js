@@ -1,10 +1,9 @@
 const apiDoc = {
     openapi: "3.0.2",
     info: {
-        title: "Customer Service API",
+        title: "ContactInformation Service API",
         version: "1.0.0"
     },
-
     paths: {},
     components: {
         schemas: {
@@ -19,34 +18,27 @@ const apiDoc = {
                     }
                 }
             },
-            Customer: {
+            ContactInformation: {
                 type: "object",
                 properties: {
                     id: {
                         type: 'string',
                         format: 'uuid',
                     },
-                    name: {
+                    first_name: {
                         type: 'string',
                     },
-                    parent_id: {
+                    last_name: {
                         type: 'string',
-                        format: 'uuid',
                     },
-                    address_id: {
+                    phone_number: {
                         type: 'string',
-                        format: 'uuid',
                     },
-                    shipping_address_id: {
+                    email_address: {
                         type: 'string',
-                        format: 'uuid',
-                    },
-                    primary_contact_id: {
-                        type: 'string',
-                        format: 'uuid',
                     },
                     is_active: {
-                        type: 'boolean',
+                        type: 'string',
                     },
                     date_created: {
                         type: 'string',
@@ -57,7 +49,6 @@ const apiDoc = {
                         format: 'date-time',
                     }
                 },
-                //required: ['name', 'parent_id', 'address_id', 'shipping_address_id', 'primary_contact_id', 'is_active']
             }
         }
     }
