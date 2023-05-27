@@ -9,7 +9,7 @@ COPY package.json ./
 RUN npm install
 
 # Now copy the rest of your application
-COPY . .
+COPY . ./
 
 # # Make sure your start.sh script is executable
 # RUN ["chmod", "+x", "./start.sh"]
