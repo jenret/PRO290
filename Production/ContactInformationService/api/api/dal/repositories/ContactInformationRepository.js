@@ -74,7 +74,7 @@ class ContactInformationRepository {
         console.log(contactinformation)
         try {
             await sql.connect(this.config);
-            const result = await sql.query(`INSERT INTO contact_information(first_name, last_name, phone_number, email_address, is_active) VALUES ('${contactinformation.first_name}', '${contactinformation.last_name}', '${contactinformation.phone_number}', '${contactinformation.email_address}', 1)`);
+            const result = await sql.query(`INSERT INTO contact_information(first_name, last_name, phone_number, email_address) VALUES ('${contactinformation.first_name}', '${contactinformation.last_name}', '${contactinformation.phone_number}', '${contactinformation.email_address}')`);
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw new Error(`Failed to create contactinformation: ${error.message}`);
