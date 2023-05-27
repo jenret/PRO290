@@ -1,0 +1,5 @@
+// loads env files for python
+pip install python-dotenv
+
+// Kafka
+pip install confluent-kafka

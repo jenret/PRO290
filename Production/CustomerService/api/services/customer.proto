@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package customer;
+
+// Rename the service to CustomerService
+service CustomerService {
+  // Get a customer
+  rpc GetCustomer(GetCustomerRequest) returns (Customer) {}
+
+  // Get all customers
+  rpc GetAllCustomers(GetAllCustomersRequest) returns (CustomerList) {}
+}
+
+// The request message containing the customer's ID
+message GetCustomerRequest {
+  string id = 1;
+}
+
+// The request message for getting all customers
+message GetAllCustomersRequest {}
+
+// The response message containing the customer's data
+message Customer {
+  string id = 1;
+  string name = 2;
+  string address_id = 3;
+  string contact_id = 4;
+  string shipping_address_id = 5;
+  string primary_contact_id = 6;
+  bool is_active = 7;
+}
+
+// The response message containing a list of customers
+message CustomerList {
+  repeated Customer customers = 1;
+}

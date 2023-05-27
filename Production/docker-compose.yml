@@ -1,0 +1,166 @@
+version: '3.7'
+services:
+  DatabaseService:
+    container_name: DatabaseService
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: Abc123!!@
+      ACCEPT_EULA: Y
+    volumes:
+      - mssqldata:/var/opt/mssql
+      - ./DatabaseService/script:/docker-entrypoint-initdb.d
+    ports:
+      - '1433:1433'
+    restart: unless-stopped
+    networks:
+      - backend
+
+  # nginx:
+  #   build: ./nginx
+  #   container_name: nginx
+  #   ports:
+  #     - "8000:80"
+  #   depends_on:
+  #     - AddressServiceAPI
+  #     - ContactInformationServiceAPI
+  #     - CustomerServiceAPI
+  #     - ItemServiceAPI
+  #     - OrderItemService
+  #     - OrderService
+  #   networks:
+  #     backend:
+
+  AddressServiceAPI:
+    build:
+      context: ./AddressService/api
+      dockerfile: Dockerfile
+    image: address_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5000:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+  ContactInformationServiceAPI:
+    build:
+      context: ./ContactInformationService/api
+      dockerfile: Dockerfile
+    image: contact_information_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5001:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+
+  CustomerServiceAPI:
+    build:
+      context: ./CustomerService/api
+      dockerfile: Dockerfile
+    image: customer_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5002:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+
+  ItemServiceAPI:
+    build:
+      context: ./ItemService/api
+      dockerfile: Dockerfile
+    image: item_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5003:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+  OrderItemServiceAPI:
+    build:
+      context: ./OrderItemService/api
+      dockerfile: Dockerfile
+    image: order_item_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5004:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+  OrderServiceAPI:
+    build:
+      context: ./OrderService/api
+      dockerfile: Dockerfile
+    image: order_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5005:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+  UserServiceAPI:
+    build:
+      context: ./UserService/api
+      dockerfile: Dockerfile
+    image: user_service_api:1
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "5006:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
+volumes:
+  mssqldata:
+
+networks:
+  backend:
+    name: backend
