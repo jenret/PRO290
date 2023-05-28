@@ -16,7 +16,7 @@ class CustomerService {
     }
 
     async validateUUID(id, serviceName, path, port) {
-        const url = `http://${serviceName}:${port}/${path}/${id}`;
+        const url = `http://${serviceName}/${path}/${id}`;
         console.warn(url)
         try {
             const response = await axios.get(url);
@@ -35,9 +35,9 @@ class CustomerService {
             address_id: Joi.string().required()
         });
 
-        const isAddressValid = await this.validateUUID(customerData.address_id, 'localhost', 'address', '5001');
+        const isAddressValid = await this.validateUUID(customerData.address_id, 'AddressServiceAPI', 'address');
         console.log(isAddressValid)
-        const isContactInformationValid = await this.validateUUID(customerData.contact_id, 'localhost', 'contact', '5002');
+        const isContactInformationValid = await this.validateUUID(customerData.contact_id, 'ContactInformationServiceAPI', 'contact');
         console.log(isContactInformationValid)
 
         if (!isAddressValid || !isContactInformationValid) {

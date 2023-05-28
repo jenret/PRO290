@@ -10,6 +10,7 @@
     "@grpc/grpc-js": "^1.8.14",
     "@grpc/proto-loader": "^0.7.7",
     "axios": "^1.4.0",
+    "eureka-js-client": "^4.5.0",
     "cookie-parser": "~1.4.4",
     "debug": "~4.3.4",
     "dotenv": "^16.0.3",

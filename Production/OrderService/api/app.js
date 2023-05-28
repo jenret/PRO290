@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const Eureka = require('eureka-js-client').Eureka;
 
 const swaggerUi = require('swagger-ui-express');
 
@@ -27,6 +28,35 @@ initialize({
     paths: './api/paths',
 });
 
+// Eureka client configuration
+const client = new Eureka({
+    // Application service details
+    instance: {
+        app: 'OrderService',
+        hostName: 'OrderServiceAPI',
+        ipAddr: 'OrderServiceAPI',
+        port: {
+            '$': 5000,
+            '@enabled': 'true',
+        },
+        vipAddress: 'api',
+        dataCenterInfo: {
+            '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+            name: 'MyOwn',
+        },
+    },
+    eureka: {
+        // Eureka server details
+        host: 'EurekaRegistry',
+        port: 8761,
+        servicePath: '/eureka/apps/',
+    },
+});
+
+client.logger.level('debug');
+client.start();
+
+
 // Error handling
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
@@ -37,7 +67,12 @@ app.use(function (err, req, res, next) {
 
 // Allow for custom port but default if not found
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Listening on port: ${port}`));
+app.listen(port, () => {
+    console.log(`Listening on port: ${port}`)
+    client.getInstancesByAppId('OrderService', (error, response) => {
+        console.log(response);
+    });
+});
 
 // Swagger UI setup
 app.use("/api-documentation", swaggerUi.serve, swaggerUi.setup(null, {
