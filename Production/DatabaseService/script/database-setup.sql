@@ -61,6 +61,8 @@ create table items (
     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
     name nvarchar(64) not null,
     description nvarchar(128) not null,
+    date_created datetime default current_timestamp,
+    date_modified datetime default current_timestamp,
     -- vendor_id uniqueidentifier not null,
     -- foreign key (vendor_id) references vendor (id) on delete cascade,
 );
@@ -98,8 +100,6 @@ create table order_items (
     foreign key (order_id) references orders (id) on delete cascade,
     foreign key (item_id) references items (id)
 );
-
-
 -- create table inventory (
 --     id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
 --     item_id uniqueidentifier not null,

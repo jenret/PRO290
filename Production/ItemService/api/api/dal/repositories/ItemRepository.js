@@ -110,10 +110,10 @@ class ItemRepository {
 
             for (let i = 0; i < 15; i++) {
                 const fakeItem = {
-                    name: faker.commerce.product(),
+                    name: faker.commerce.productName(),
                     description: faker.commerce.productDescription()
                 }
-                 await sql.query `INSERT INTO items(name, description)  VALUES ('${fakeItem.name}', '${fakeItem.description}')`;
+                 await sql.query `INSERT INTO items(name, description) VALUES ('${fakeItem.name}', '${fakeItem.description}')`;
             }
         } catch (error) {
             throw new Error(`Failed to create item: ${error.message}`);
