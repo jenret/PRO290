@@ -48,6 +48,7 @@ class UserRepository {
                 userData.last_name,
                 userData.email_address,
                 userData.phone_number,
+                userData.api_key,
                 userData.password
             );
         } catch (error) {
@@ -76,6 +77,7 @@ class UserRepository {
                 userData.last_name,
                 userData.email_address,
                 userData.phone_number,
+                userData.api_key,
                 userData.password
             ));
         } catch (error) {

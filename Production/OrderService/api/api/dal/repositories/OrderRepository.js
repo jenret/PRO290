@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const kafka = require("../../../service/kafka");
+const kafka = require("../../service/kafka");
 const {
     faker
 } = require('@faker-js/faker');

@@ -80,6 +80,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=address_producer
       - TOPIC=address_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5000:5000"
     restart: always
@@ -101,6 +102,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=contact_producer
       - TOPIC=contact_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5001:5000"
     restart: always
@@ -122,6 +124,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=customer_producer
       - TOPIC=customer_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5002:5000"
     restart: always
@@ -143,6 +146,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=item_producer
       - TOPIC=item_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5003:5000"
     restart: always
@@ -164,6 +168,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=order_item_producer
       - TOPIC=order_item_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5004:5000"
     restart: always
@@ -185,6 +190,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=order_producer
       - TOPIC=order_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5005:5000"
     restart: always
@@ -206,6 +212,7 @@ services:
       - BROKER_SERVER_ADDRESS=broker:29092
       - CLIENT_ID=user_producer
       - TOPIC=user_topic
+      - TOKEN_SECRET=SUMMERBREAK
     ports:
       - "5006:5000"
     restart: always

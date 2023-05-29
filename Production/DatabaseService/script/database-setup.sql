@@ -12,6 +12,7 @@ create table users (
     last_name nvarchar(64) not null,
     email_address nvarchar(256) not null,
     phone_number nvarchar(64) not null,
+    api_key UNIQUEIDENTIFIER DEFAULT NEWID() null,
     password nvarchar(256) not null,
     date_created datetime default current_timestamp,
     date_modified datetime default current_timestamp
