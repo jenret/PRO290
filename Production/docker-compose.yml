@@ -1,6 +1,5 @@
 version: '3.7'
 services:
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
@@ -43,6 +42,31 @@ services:
     networks:
       - backend
 
+  MongoService:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+    networks:
+      - backend
+
+  LogsConsumer:
+    build:
+      context: ./LogService/api
+      dockerfile: Dockerfile
+    image: log_service_api:1
+    environment:
+      - BROKER_SERVER_ADDRESS=broker:29092
+    ports:
+      - "3000:5000"
+    restart: always
+    depends_on:
+      - DatabaseService
+    networks:
+      - backend
+
   AddressServiceAPI:
     build:
       context: ./AddressService/api
@@ -53,6 +77,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=address_producer
+      - TOPIC=address_topic
     ports:
       - "5000:5000"
     restart: always
@@ -71,6 +98,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=contact_producer
+      - TOPIC=contact_topic
     ports:
       - "5001:5000"
     restart: always
@@ -89,6 +119,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=customer_producer
+      - TOPIC=customer_topic
     ports:
       - "5002:5000"
     restart: always
@@ -107,6 +140,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=item_producer
+      - TOPIC=item_topic
     ports:
       - "5003:5000"
     restart: always
@@ -125,6 +161,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=order_item_producer
+      - TOPIC=order_item_topic
     ports:
       - "5004:5000"
     restart: always
@@ -143,6 +182,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=order_producer
+      - TOPIC=order_topic
     ports:
       - "5005:5000"
     restart: always
@@ -161,6 +203,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
+      - BROKER_SERVER_ADDRESS=broker:29092
+      - CLIENT_ID=user_producer
+      - TOPIC=user_topic
     ports:
       - "5006:5000"
     restart: always
@@ -197,6 +242,7 @@ services:
 
 volumes:
   mssqldata:
+  mongodb_data:
 
 networks:
   backend:

@@ -1,5 +1,5 @@
-// CustomerRepository.js
 const sql = require('mssql');
+const kafka = require("../../service/kafka");
 const {
     faker
 } = require('@faker-js/faker');
@@ -19,18 +19,29 @@ class CustomerRepository {
         };
     }
 
-    // Methods that interact with the customer table
+    async produceKafkaMessage(level, type, response) {
+        try {
+            kafka.produceMessage(level, {
+                type: type,
+                response: response
+            });
+        } catch (error) {
+            console.error(`Failed to produce Kafka message: ${error.message}`);
+        }
+    }
+
     async getCustomerById(customerId) {
         try {
             await sql.connect(this.config);
             const result = await sql.query(`SELECT * FROM customer WHERE id = '${customerId}'`);
             const customerData = result.recordset[0];
 
+            this.produceKafkaMessage("info", "getCustomerById", `${customerId} was retrieved from the database`);
+
             if (!customerData) {
                 throw new Error('Customer not found');
             }
 
-            // Construct and return a Customer object
             return new Customer(
                 customerData.id,
                 customerData.name,
@@ -38,6 +49,7 @@ class CustomerRepository {
                 customerData.contact_id
             );
         } catch (error) {
+            this.produceKafkaMessage("error", "getCustomerById", `Failed to fetch customer: ${error.message}`);
             throw new Error(`Failed to fetch customer: ${error.message}`);
         } finally {
             sql.close();
@@ -50,11 +62,12 @@ class CustomerRepository {
             const result = await sql.query `SELECT * FROM customer`;
             const customersData = result.recordset;
 
+            this.produceKafkaMessage("info", "getAllCustomers", `All customers were fetched`);
+
             if (!customersData) {
                 throw new Error('No customers found');
             }
 
-            // Construct and return a list of Customer objects
             return customersData.map(customerData => new Customer(
                 customerData.id,
                 customerData.name,
@@ -62,6 +75,7 @@ class CustomerRepository {
                 customerData.contact_id
             ));
         } catch (error) {
+            this.produceKafkaMessage("error", "getAllCustomers", `Failed to fetch all customers`);
             throw new Error(`Failed to fetch all customers: ${error.message}`);
         } finally {
             await sql.close();
@@ -82,8 +96,12 @@ class CustomerRepository {
             }
 
             const result = await sql.query(`INSERT INTO customer(name, contact_id, address_id) VALUES ('${customer.name}','${customer.contact_id}', '${customer.address_id}')`);
+
+            this.produceKafkaMessage("info", "createCustomer", `A customer was created`);
+
             return result.rowsAffected[0] > 0;
         } catch (error) {
+            this.produceKafkaMessage("error", "createCustomer", `Failed to create customer`);
             throw new Error(`Failed to create customer: ${error.message}`);
         } finally {
             await sql.close();
@@ -94,8 +112,12 @@ class CustomerRepository {
         try {
             await sql.connect(this.config);
             const result = await sql.query(`UPDATE customer SET name='${customer.name}', address_id='${customer.address_id}', contact_id='${customer.contact_id}' WHERE id='${customer.id}'`);
+
+            this.produceKafkaMessage("info", "updateCustomer", `${customer.id} was updated`);
+
             return result.rowsAffected[0] > 0;
         } catch (error) {
+            this.produceKafkaMessage("error", "updateCustomer", `Failed to update customer`);
             throw new Error(`Failed to update customer: ${error.message}`);
         } finally {
             await sql.close();
@@ -106,8 +128,12 @@ class CustomerRepository {
         try {
             await sql.connect(this.config);
             const result = await sql.query(`DELETE FROM customer WHERE id='${customerId}'`);
+
+            this.produceKafkaMessage("info", "deleteCustomer", `${customerId} was removed from the database`);
+
             return result.rowsAffected[0] > 0;
         } catch (error) {
+            this.produceKafkaMessage("error", "deleteCustomer", `Failed to delete customer`);
             throw new Error(`Failed to delete customer: ${error.message}`);
         } finally {
             await sql.close();
@@ -116,73 +142,3 @@ class CustomerRepository {
 }
 
 module.exports = CustomerRepository;
-
-
-// const grpc = require("@grpc/grpc-js");
-// const protoLoader = require("@grpc/proto-loader");
-// const KafkaProducer = require('../../../services/kafka_client'); 
-
-// class CustomerRepository {
-//     constructor() {
-//         this.PROTO_PATH = __dirname + '/customer.proto';
-
-
-//         const packageDefinition = protoLoader.loadSync(
-//             this.PROTO_PATH, {
-//                 keepCase: true,
-//                 longs: String,
-//                 enums: String,
-//                 defaults: true,
-//                 oneofs: true,
-//             });
-
-//         const customer_proto = grpc.loadPackageDefinition(packageDefinition).customer;
-
-//         this.client = new customer_proto.CustomerService.service(
-//             'localhost:50051', // replace with your gRPC server address
-//             grpc.credentials.createInsecure()
-//         );
-//     }
-
-//     async findById(customerId) {
-//         return new Promise((resolve, reject) => {
-//             this.client.GetCustomer({
-//                 id: customerId
-//             }, function (err, response) {
-//                 if (err) {
-//                     reject(err);
-//                 } else {
-//                     resolve(response);
-//                 }
-//             });
-//         });
-//     }
-
-//     async getAllCustomers() {
-//         return new Promise((resolve, reject) => {
-//             this.client.GetAllCustomers({}, function (err, response) {
-//                 if (err) {
-//                     reject(err);
-//                 } else {
-//                     resolve(response.customers);
-//                 }
-//             });
-//         });
-//     }
-
-//     async create(customer) {
-//         KafkaProducer.produceMessage("CustomerTopic", "CreateCustomer", customer);
-//     }
-
-//     async update(customer) {
-//         KafkaProducer.produceMessage("CustomerTopic", "UpdateCustomer", customer);
-//     }
-
-//     async delete(customerId) {
-//         KafkaProducer.produceMessage("CustomerTopic", "DeleteCustomer", {
-//             id: customerId
-//         });
-//     }
-// }
-
-// module.exports = CustomerRepository;
