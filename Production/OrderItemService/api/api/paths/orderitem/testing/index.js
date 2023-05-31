@@ -1,5 +1,5 @@
 const OrderService = require("../../../dal/services/OrderItemsService");
-const orderService = new OrderService();
+const orderService = new OrderItemsService();
 
 module.exports = function () {
     let operations = {
@@ -27,7 +27,7 @@ module.exports = function () {
             content: {
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/OrderItems"
+                        $ref: "#/components/schemas/Order"
                     }
                 }
             }
@@ -38,7 +38,7 @@ module.exports = function () {
                 content: {
                     "application/json": {
                         schema: {
-                            $ref: "#/components/schemas/OrderItems"
+                            $ref: "#/components/schemas/Order"
                         }
                     }
                 }
