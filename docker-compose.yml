@@ -36,6 +36,15 @@ services:
       - DatabaseService
     networks:
       - backend
+    
+  MailService:
+    build:
+      context: ./Production/PyMail/PyMail
+      dockerfile: Dockerfile
+    command: python3 main.py
+    depends_on: broker
+    ports:
+      - "5000:5000"
 
 volumes:
   mssqldata:
