@@ -2,7 +2,7 @@ FROM python:3.8-slim-buster
 
 EXPOSE 5000
 
-WORKDIR /Production/PyMail
+WORKDIR /Production/PyMail/PyMail
 
 COPY requirements.txt requirements.txt
 
