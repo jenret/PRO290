@@ -4,6 +4,7 @@
 import os
 import smtplib, ssl
 import sys
+import json
 
 from dotenv import load_dotenv, find_dotenv
 from email.mime.multipart import MIMEMultipart
@@ -13,12 +14,12 @@ from confluent_kafka import Consumer, KafkaException, KafkaError
 ##
 ##CONSUMER
 ##
-conf = {'bootstrap.servers': 'where the broker address goes',
+conf = {'bootstrap.servers': 'order_management:9092',
         'group.id': 'emailStream',
         'auto.offset.reset': 'smallest'}
 
 consumer = Consumer(conf)
-topic = 'userEmail'
+topic = 'user_topic'
 
 running = True
 
@@ -39,7 +40,13 @@ def main():
                     raise KafkaException(message.error())
             else:
                 data = message.value().decode('utf-8')
-                print(data)
+                kafkaJson = json.loads(data)
+
+                response = kafkaJson['response']
+                endIndex = response.find(" ")
+                userEmail = response[:endIndex]
+
+                sendTheEmail(userEmail)
     finally:
         consumer.close()
 
